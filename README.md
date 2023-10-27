@@ -1,8 +1,10 @@
 # 0x05. AirBnB clone V3 - RESTful API
 This is v3 of ongoing project to make a simple copy of Airbnb website
-## V1 - The console[link of V1 repo for the console](https://github.com/Abdalmohsen-H/AirBnB_clone)create your data modelmanage (create, update, destroy, etc) objects via a console / command interpreterstore and persist objects to a file (JSON file)The console is the first segment of the AirBnB project at Holberton School that will collectively cover fundamental concepts of higher level programming.
 
-## V2 - MySQL storage[link](https://github.com/Abdalmohsen-H/AirBnB_clone_v2)
+## V1 - The console -> {[link of V1 repo for the console](https://github.com/Abdalmohsen-H/AirBnB_clone)}
+create your data modelmanage (create, update, destroy, etc) objects via a console / command interpreterstore and persist objects to a file (JSON file)The console is the first segment of the AirBnB project at Holberton School that will collectively cover fundamental concepts of higher level programming.
+
+## V2 - MySQL storage {[link](https://github.com/Abdalmohsen-H/AirBnB_clone_v2)}
 The objective was to build another storage engine using MySQL database, so we coul choose either to work with MySQL or FileStorage (JSON serialization)
 
 Also creating static files for the frontend, that will be converted to dynamic files later
