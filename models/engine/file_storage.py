@@ -77,7 +77,7 @@ class FileStorage:
         key = "{}.{}".format(cls.__name__, id)
         if cls and id and cls in classes.values():
             return self.all(cls).get(key)
-        else
+        else:
             return None
 
     def count(self, cls=None):
