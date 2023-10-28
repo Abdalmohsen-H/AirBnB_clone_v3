@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""
-create falsk app
+"""create falsk app for airbnb clone project
 register the blueprint, Then create function to close storage
 """
 from api.v1.views import app_views
@@ -28,6 +27,7 @@ app.url_map.strict_slashes = False
 def close_strg(error):  # don't forget this argument to handle errors
     """
     function that closes storage session
+    for task 3 on the project
     """
     if error:
         app.logger.error(
