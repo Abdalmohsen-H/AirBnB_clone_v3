@@ -33,6 +33,12 @@ def close_strg(error):  # don't forget this argument to handle errors
     storage.close()
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    """function to handle 404 page not found and return 404 code"""
+    return jsonify({"error": "Not found"}), 404
+    
+    
 if __name__ == "__main__":
     # run your Flask server (variable app) with:
     # host = environment variable HBNB_API_HOST or 0.0.0.0 if not defined
