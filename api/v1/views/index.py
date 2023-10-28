@@ -13,4 +13,5 @@ from api.v1.views import app_views
 def get_app_status():
     """ return status ok in json
     """
-    return(jsonify({"status": "OK"}))
+
+    return (jsonify({"status": "OK"}))

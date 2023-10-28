@@ -2,6 +2,7 @@
 """
 API V1 task 2
 """
+from api.v1.views import app_views
 from flask import Flask, jsonify
 # import storage from models
 from models import storage
@@ -10,8 +11,6 @@ from os import getenv
 # make an instance on Flask class and assign
 # it to app variable
 app = Flask(__name__)
-# import app_views from api.v1.views
-from api.v1.views import app_views
 # register the blueprint app_views to your Flask instance app
 app.register_blueprint(app_views)
 
