@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""create falsk app for airbnb clone project
-register the blueprint, Then create function to close storage
-"""
+"""create falsk app for airbnb clone project, register blueprint"""
 from api.v1.views import app_views
 from flask import Flask, jsonify
 # import storage from models
@@ -15,20 +13,20 @@ app = Flask(__name__)
 app.register_blueprint(app_views)
 
 # enable json pretty printed
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+#app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+
 # disable strict _slashes globally
 # by default it was on
 app.url_map.strict_slashes = False
+
 # declare a method to handle @app.teardown_appcontext
 # that calls storage.close()
 
 
 @app.teardown_appcontext
 def close_strg(error):  # don't forget this argument to handle errors
-    """
-    function that closes storage session
-    for task 3 on the project
-    """
+    """function that closes storage session
+    for task 3 on the project"""
     if error:
         app.logger.error(
             f"Unhandled exception on teardown:{error}")
