@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.register_blueprint(app_views)
 
 # enable json pretty printed
-#app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+# app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 # disable strict _slashes globally
 # by default it was on
@@ -37,8 +37,8 @@ def close_strg(error):  # don't forget this argument to handle errors
 def page_not_found(error):
     """function to handle 404 page not found and return 404 code"""
     return jsonify({"error": "Not found"}), 404
-    
-    
+
+
 if __name__ == "__main__":
     # run your Flask server (variable app) with:
     # host = environment variable HBNB_API_HOST or 0.0.0.0 if not defined
