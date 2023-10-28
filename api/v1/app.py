@@ -1,6 +1,6 @@
-#!usr/bin/python3
+#!/usr/bin/python3
 """
- create falsk app
+create falsk app
 register the blueprint, Then create function to close storage
 """
 from api.v1.views import app_views
@@ -27,7 +27,7 @@ app.url_map.strict_slashes = False
 @app.teardown_appcontext
 def close_strg(error):  # don't forget this argument to handle errors
     """
-    closes storage session
+    function that closes storage session
     """
     if error:
         app.logger.error(
