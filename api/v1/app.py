@@ -1,6 +1,7 @@
 #!usr/bin/python3
 """
-API V1 task 2
+ create falsk app
+register the blueprint, Then create function to close storage
 """
 from api.v1.views import app_views
 from flask import Flask, jsonify
