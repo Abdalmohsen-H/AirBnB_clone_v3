@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """API views for CRUD operation on State model"""
 from api.v1.views import app_views
-from flask import abort, jsonify
+from flask import abort, jsonify, request
 from models import storage
 from models.state import State
 
@@ -54,3 +54,49 @@ def del_one_state_by_id(state_id):
     storage.save()
     # return empty jsonified dict with 200 status code
     return jsonify({}), 200
+
+@app_views.route('/states', methods=['POST'])
+def create_new_state():
+    """ create new state object route"""
+    # get json from request
+    json = request.get_json()
+
+    # check json and if failed abort and with msg
+    if not json:
+        abort(400, 'Not a JSON')
+
+    if 'name' not in json:
+        abort(400, 'Missing name')
+
+    # create new state object
+    new_state = State(**json)
+    # save new_stae object to apply updates
+    new_state.save()
+
+    return jsonify(new_state.to_dict()), 201
+
+@app_views.route('/states/<string:state_id>', methods=['PUT'])
+def update_state_by_id(state_id):
+    """ update state object by id route"""
+    # get json from request
+    json = request.get_json()
+
+    if not json:
+        abort(400, 'Not a JSON')
+
+    # get state object by id
+    state = storage.get(State, state_id)
+
+    if state is None:
+        abort(404)
+
+    # update state object with all key-value pairs of the dictionary.
+    for key, value in json.items():
+        # Ignore keys: id, created_at and updated_at
+        if key not in ['id', 'created_at', 'updated_at']:
+            setattr(state, key, value)
+
+    # save state object to apply updates
+    state.save()
+
+    return jsonify(state.to_dict()), 200
