@@ -113,3 +113,15 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t != 'db', "don't test db storage")
+    def test_get(self):
+        """Test get method that added on task 2 in storage engine classes"""
+        get_res = storage.get(None, None)
+        self.assertIsNone(get_res)
+
+    @unittest.skipIf(models.storage_t != 'db', "don't test db storage")
+    def test_count(self):
+        """Test count method that added on task 2 in storage engine classes"""
+        count_res = storage.count()
+        self.assertIsNotNone(count_res)
