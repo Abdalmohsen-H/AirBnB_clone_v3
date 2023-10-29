@@ -3,7 +3,7 @@
 from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models import storage
-from models.city import city
+from models.city import City
 
 
 @app_views.route('/cities', methods=['GET'])
@@ -55,6 +55,7 @@ def del_one_city_by_id(city_id):
     # return empty jsonified dict with 200 status code
     return jsonify({}), 200
 
+
 @app_views.route('/cities', methods=['POST'])
 def create_new_city():
     """ create new city object route"""
@@ -74,6 +75,7 @@ def create_new_city():
     new_city.save()
 
     return jsonify(new_city.to_dict()), 201
+
 
 @app_views.route('/cities/<string:city_id>', methods=['PUT'])
 def update_city_by_id(city_id):

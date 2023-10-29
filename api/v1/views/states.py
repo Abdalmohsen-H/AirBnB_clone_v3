@@ -55,6 +55,7 @@ def del_one_state_by_id(state_id):
     # return empty jsonified dict with 200 status code
     return jsonify({}), 200
 
+
 @app_views.route('/states', methods=['POST'])
 def create_new_state():
     """ create new state object route"""
@@ -74,6 +75,7 @@ def create_new_state():
     new_state.save()
 
     return jsonify(new_state.to_dict()), 201
+
 
 @app_views.route('/states/<string:state_id>', methods=['PUT'])
 def update_state_by_id(state_id):
