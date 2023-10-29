@@ -93,7 +93,7 @@ def update_city_by_id(city_id):
     # update city object with all key-value pairs of the dictionary.
     for key, value in json.items():
         # Ignore keys: id, created_at and updated_at
-        if key not in ['id', 'created_at', 'updated_at']:
+        if key not in ['id', 'created_at', 'updated_at', 'state_id']:
             setattr(city, key, value)
 
     # save city object to apply updates
