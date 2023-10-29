@@ -60,7 +60,9 @@ test_file_storage.py'])
                         "FileStorage class needs a docstring")
 
     def test_fs_func_docstrings(self):
-        """Test for the presence of docstrings in FileStorage methods"""
+        """
+        Test for the presence of docstrings in FileStorage methods
+        """
         for func in self.fs_f:
             self.assertIsNot(func[1].__doc__, None,
                              "{:s} method needs a docstring".format(func[0]))
@@ -69,10 +71,14 @@ test_file_storage.py'])
 
 
 class TestFileStorage(unittest.TestCase):
-    """Test the FileStorage class"""
+    """
+    Test the FileStorage class
+    """
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_all_returns_dict(self):
-        """Test that all returns the FileStorage.__objects attr"""
+        """
+        Test that all returns the FileStorage.__objects attr
+        """
         storage = FileStorage()
         new_dict = storage.all()
         self.assertEqual(type(new_dict), dict)
@@ -80,7 +86,9 @@ class TestFileStorage(unittest.TestCase):
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_new(self):
-        """test that new adds an object to the FileStorage.__objects attr"""
+        """
+        test that new adds an object to the FileStorage.__objects attr
+        """
         storage = FileStorage()
         save = FileStorage._FileStorage__objects
         FileStorage._FileStorage__objects = {}
@@ -96,7 +104,9 @@ class TestFileStorage(unittest.TestCase):
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_save(self):
-        """Test that save properly saves objects to file.json"""
+        """
+        Test that save properly saves objects to file.json
+        """
         storage = FileStorage()
         new_dict = {}
         for key, value in classes.items():
@@ -117,11 +127,72 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "don't test db storage")
     def test_get(self):
         """Test get method that added on task 2 in storage engine classes"""
+        storage = FileStorage()
         get_res = storage.get(None, None)
         self.assertIsNone(get_res)
 
     @unittest.skipIf(models.storage_t != 'db', "don't test db storage")
     def test_count(self):
         """Test count method that added on task 2 in storage engine classes"""
+        storage = FileStorage()
         count_res = storage.count()
         self.assertIsNotNone(count_res)
+class TestFileStorage(unittest.TestCase):
+    """
+    TEST FILE STORAGE
+    """
+
+    # all method returns a dictionary of all objects when no class is passed
+    def test_all_returns_dict_no_class(self):
+        """
+        TEST STORAGE
+        """
+        storage = FileStorage()
+        result = storage.all()
+        self.assertEqual(type(result), dict)
+
+    # all method returns a dictionary of objects of a specific class when a class is passed
+    def test_all_returns_dict_with_class(self):
+        """
+        TEST STORAGE
+        """
+        storage = FileStorage()
+        result = storage.all(Amenity)
+        self.assertEqual(type(result), dict)
+
+    # new method adds an object to the __objects dictionary
+    def test_new_adds_object_to_objects(self):
+        """
+        TEST STORAGE
+        """
+        storage = FileStorage()
+        obj = Amenity()
+        storage.new(obj)
+        self.assertIn(obj, storage.all().values())
+
+    # all method returns an empty dictionary when no objects are present
+    def test_all_returns_empty_dict_no_objects(self):
+        """
+        TEST STORAGE
+        """
+        storage = FileStorage()
+        result = storage.all()
+        self.assertEqual(result, {})
+
+    # all method returns an empty dictionary when a specific class is passed but no objects of that class are present
+    def test_all_returns_empty_dict_no_objects_with_class(self):
+        """
+        TEST STORAGE
+        """
+        storage = FileStorage()
+        result = storage.all(Amenity)
+        self.assertEqual(result, {})
+
+    # new method does not add an object to the __objects dictionary if obj is None
+    def test_new_does_not_add_object_to_objects_if_none(self):
+        """
+        TEST STORAGE
+        """
+        storage = FileStorage()
+        storage.new(None)
+        self.assertEqual(storage.all(), {})

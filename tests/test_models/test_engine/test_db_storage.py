@@ -98,3 +98,47 @@ class TestFileStorage(unittest.TestCase):
         """Test count method that added on task 2 in storage engine classes"""
         count_res = storage.count()
         self.assertIsNotNone(count_res)
+class TestDBStorage(unittest.TestCase):
+
+    # DBStorage object can be instantiated successfully
+    def test_instantiation_success(self):
+        db_storage = DBStorage()
+        self.assertIsInstance(db_storage, DBStorage)
+
+    # all() method returns a dictionary of all objects in the database
+    def test_all_method_returns_dictionary(self, mocker):
+        db_storage = DBStorage()
+        with mocker.patch('models.engine.db_storage.DBStorage.__session') as mock_session:
+            mock_session.query.return_value.all.return_value = [Amenity(), City(), Place()]
+            result = db_storage.all()
+            self.assertIsInstance(result, dict)
+            self.assertEqual(len(result), 3)
+
+    # new() method adds an object to the current database session
+    def test_new_method_adds_object(self, mocker):
+        db_storage = DBStorage()
+        obj = Amenity()
+        with mocker.patch('models.engine.db_storage.DBStorage.__session') as mock_session:
+            db_storage.new(obj)
+            mock_session.add.assert_called_once_with(obj)
+
+    # all() method returns an empty dictionary when there are no objects in the database
+    def test_all_method_returns_empty_dictionary(self, mocker):
+        db_storage = DBStorage()
+        with mocker.patch('models.engine.db_storage.DBStorage.__session') as mock_session:
+            mock_session.query.return_value.all.return_value = []
+            result = db_storage.all()
+            self.assertIsInstance(result, dict)
+            self.assertEqual(len(result), 0)
+
+    # new() method raises an exception when the object is None
+    def test_new_method_raises_exception_when_object_is_none(self, mocker):
+        db_storage = DBStorage()
+        with self.assertRaises(Exception):
+            db_storage.new(None)
+
+    # delete() method does not raise an exception when the object is None
+    def test_delete_method_does_not_raise_exception_when_object_is_none(self, mocker):
+        db_storage = DBStorage()
+        with self.assertRaises(Exception):
+            db_storage.delete(None)

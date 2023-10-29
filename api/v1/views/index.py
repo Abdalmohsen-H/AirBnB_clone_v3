@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""index.py File that defines a view function
+"""
+index.py File that defines a view function
 on route  "/status"
 """
 from models import storage
@@ -11,15 +12,19 @@ from flask import jsonify
 
 @app_views.route('/status')
 def get_app_status():
-    """ return status ok in json
-    for task 3"""
+    """
+    return status ok in json
+    for task 3
+    """
 
     return (jsonify({"status": "OK"}))
 
 
 @app_views.route('/stats')
 def model_objs_count():
-    """Task 4 Function that uses methods added on task2 to return count"""
+    """
+    Task 4 Function that uses methods added on task2 to return count
+    """
     return jsonify({"amenities": storage.count("Amenity"),
                     "cities": storage.count("City"),
                     "places": storage.count("Place"),

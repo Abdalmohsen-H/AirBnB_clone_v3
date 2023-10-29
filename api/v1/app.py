@@ -25,8 +25,10 @@ app.url_map.strict_slashes = False
 
 @app.teardown_appcontext
 def close_strg(error):  # don't forget this argument to handle errors
-    """function that closes storage session
-    for task 3 on the project"""
+    """
+    function that closes storage session
+    for task 3 on the project
+    """
     if error:
         app.logger.error(
             f"Unhandled exception on teardown:{error}")
@@ -35,11 +37,16 @@ def close_strg(error):  # don't forget this argument to handle errors
 
 @app.errorhandler(404)
 def page_not_found(error):
-    """function to handle 404 page not found and return 404 code"""
+    """
+    function to handle 404 page not found and return 404 code
+    """
     return jsonify({"error": "Not found"}), 404
 
 
 if __name__ == "__main__":
+    """
+    MAIN
+    """
     # run your Flask server (variable app) with:
     # host = environment variable HBNB_API_HOST or 0.0.0.0 if not defined
     # port = environment variable HBNB_API_PORT or 5000 if not defined
