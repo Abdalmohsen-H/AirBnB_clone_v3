@@ -7,6 +7,7 @@ from datetime import datetime
 import inspect
 import models
 from models.engine import db_storage
+from models.engine import file_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
@@ -14,6 +15,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+
 import json
 import os
 import pep8
@@ -21,6 +23,7 @@ import unittest
 DBStorage = db_storage.DBStorage
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
            "Review": Review, "State": State, "User": User}
+FileStorage = file_storage.FileStorage
 
 
 class TestDBStorageDocs(unittest.TestCase):
@@ -90,15 +93,22 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'file', "don't test file storage")
     def test_get(self):
         """Test get method that added on task 2 in storage engine classes"""
+        storage = FileStorage()
         get_res = storage.get(None, None)
         self.assertIsNone(get_res)
 
     @unittest.skipIf(models.storage_t != 'file', "don't test file storage")
     def test_count(self):
         """Test count method that added on task 2 in storage engine classes"""
+        storage = FileStorage()
         count_res = storage.count()
         self.assertIsNotNone(count_res)
+
+
 class TestDBStorage(unittest.TestCase):
+    """
+    test class
+    """
 
     # DBStorage object can be instantiated successfully
     def test_instantiation_success(self):
@@ -108,8 +118,10 @@ class TestDBStorage(unittest.TestCase):
     # all() method returns a dictionary of all objects in the database
     def test_all_method_returns_dictionary(self, mocker):
         db_storage = DBStorage()
-        with mocker.patch('models.engine.db_storage.DBStorage.__session') as mock_session:
-            mock_session.query.return_value.all.return_value = [Amenity(), City(), Place()]
+        loc = 'models.engine.db_storage.DBStorage.__session'
+        with mocker.patch(loc)as mock_session:
+            mock_session.query.return_value.all.return_value =\
+                                    [Amenity(), City(), Place()]
             result = db_storage.all()
             self.assertIsInstance(result, dict)
             self.assertEqual(len(result), 3)
@@ -118,14 +130,17 @@ class TestDBStorage(unittest.TestCase):
     def test_new_method_adds_object(self, mocker):
         db_storage = DBStorage()
         obj = Amenity()
-        with mocker.patch('models.engine.db_storage.DBStorage.__session') as mock_session:
+        loc = 'models.engine.db_storage.DBStorage.__session'
+        with mocker.patch(loc) as mock_session:
             db_storage.new(obj)
             mock_session.add.assert_called_once_with(obj)
 
-    # all() method returns an empty dictionary when there are no objects in the database
+    # all() method returns an empty dictionary
+    # when there are no objects in the database
     def test_all_method_returns_empty_dictionary(self, mocker):
         db_storage = DBStorage()
-        with mocker.patch('models.engine.db_storage.DBStorage.__session') as mock_session:
+        loc = 'models.engine.db_storage.DBStorage.__session'
+        with mocker.patch(loc) as mock_session:
             mock_session.query.return_value.all.return_value = []
             result = db_storage.all()
             self.assertIsInstance(result, dict)
@@ -137,8 +152,9 @@ class TestDBStorage(unittest.TestCase):
         with self.assertRaises(Exception):
             db_storage.new(None)
 
-    # delete() method does not raise an exception when the object is None
-    def test_delete_method_does_not_raise_exception_when_object_is_none(self, mocker):
+    # delete() method does not raise an
+    # exception when the object is None
+    def tst_delt_method_does_not_rise_excpn_when_objct_is_none(self, mocker):
         db_storage = DBStorage()
         with self.assertRaises(Exception):
             db_storage.delete(None)

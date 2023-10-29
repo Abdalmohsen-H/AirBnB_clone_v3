@@ -137,6 +137,8 @@ class TestFileStorage(unittest.TestCase):
         storage = FileStorage()
         count_res = storage.count()
         self.assertIsNotNone(count_res)
+
+
 class TestFileStorage(unittest.TestCase):
     """
     TEST FILE STORAGE
@@ -151,7 +153,8 @@ class TestFileStorage(unittest.TestCase):
         result = storage.all()
         self.assertEqual(type(result), dict)
 
-    # all method returns a dictionary of objects of a specific class when a class is passed
+    # all method returns a dictionary of objects
+    # of a specific class when a class is passed
     def test_all_returns_dict_with_class(self):
         """
         TEST STORAGE
@@ -179,7 +182,8 @@ class TestFileStorage(unittest.TestCase):
         result = storage.all()
         self.assertEqual(result, {})
 
-    # all method returns an empty dictionary when a specific class is passed but no objects of that class are present
+    # all method returns an empty dictionary when a specific class
+    # is passed but no objects of that class are present
     def test_all_returns_empty_dict_no_objects_with_class(self):
         """
         TEST STORAGE
@@ -188,7 +192,8 @@ class TestFileStorage(unittest.TestCase):
         result = storage.all(Amenity)
         self.assertEqual(result, {})
 
-    # new method does not add an object to the __objects dictionary if obj is None
+    # new method does not add an object
+    # to the __objects dictionary if obj is None
     def test_new_does_not_add_object_to_objects_if_none(self):
         """
         TEST STORAGE

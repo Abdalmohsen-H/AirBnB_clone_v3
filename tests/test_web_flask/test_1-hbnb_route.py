@@ -5,6 +5,7 @@ TEST
 from flask import app
 import unittest
 
+
 class TestIndex(unittest.TestCase):
     """test"""
     # Returns 'Hello HBNB!' when accessing the root URL
