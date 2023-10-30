@@ -5,6 +5,7 @@ an Airbnb clone project and registers a blueprint.
 
 from api.v1.views import app_views
 from flask import Flask, jsonify
+from flask_cors import CORS
 from models import storage
 from os import getenv
 
@@ -13,6 +14,9 @@ app = Flask(__name__)
 
 # Register the blueprint 'app_views' with the Flask instance
 app.register_blueprint(app_views)
+
+# (CORS) setup
+cors = CORS(app, resources={r"/api/*": {"origins": "0.0.0.0"}})
 
 
 @app.teardown_appcontext
