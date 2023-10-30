@@ -12,11 +12,11 @@ from os import getenv
 # Create a Flask app instance
 app = Flask(__name__)
 
+# (CORS) setup
+cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
+
 # Register the blueprint 'app_views' with the Flask instance
 app.register_blueprint(app_views)
-
-# (CORS) setup
-cors = CORS(app, resources={r"/api/*": {"origins": "0.0.0.0"}})
 
 
 @app.teardown_appcontext
