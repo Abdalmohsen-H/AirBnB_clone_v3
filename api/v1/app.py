@@ -25,8 +25,7 @@ def close_strg(error):
     for task 3 on the project
     """
     if error:
-        app.logger.error(
-            f"Unhandled exception on teardown:{error}")
+        app.logger.error(f"Unhandled exception on teardown:{error}")
     storage.close()
 
 
@@ -46,7 +45,8 @@ if __name__ == "__main__":
     # host = environment variable HBNB_API_HOST or 0.0.0.0 if not defined
     # port = environment variable HBNB_API_PORT or 5000 if not defined
     # threaded=True
-    app.run(host=getenv('HBNB_API_HOST', default="0.0.0.0"),
-            port=int(getenv('HBNB_API_PORT', default=5000)),
-            threaded=True
-            )
+    app.run(
+        host=getenv("HBNB_API_HOST", default="0.0.0.0"),
+        port=int(getenv("HBNB_API_PORT", default=5000)),
+        threaded=True,
+    )
