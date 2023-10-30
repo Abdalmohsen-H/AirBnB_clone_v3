@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-
-"""
-This script creates a Flask web application for
+"""This script creates a Flask web application for
 an Airbnb clone project and registers a blueprint.
 """
 
@@ -10,14 +8,11 @@ from flask import Flask, jsonify
 from models import storage
 from os import getenv
 
-"""# Create a Flask app instance"""
+# Create a Flask app instance
 app = Flask(__name__)
 
-"""# Register the blueprint 'app_views' with the Flask instance"""
+# Register the blueprint 'app_views' with the Flask instance
 app.register_blueprint(app_views)
-
-"""# Disable strict slashes globally"""
-app.url_map.strict_slashes = False
 
 
 @app.teardown_appcontext
