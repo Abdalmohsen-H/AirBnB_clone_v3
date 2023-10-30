@@ -1,9 +1,13 @@
 #!/usr/bin/python3
 """API views for CRUD operation on Users model"""
 from api.v1.views import app_views
-from flask import abort, jsonify, request
+from flask import Flask, abort, jsonify, request
 from models import storage
+from models.base_model import BaseModel
 from models.user import User
+
+
+to_json = BaseModel.to_json
 
 
 @app_views.route('/users', methods=['GET'])
@@ -12,7 +16,7 @@ def Retrieves_list_of_all_User():
     Get and serialize all users
     """
     all_users = storage.all(User)
-    all_users_list = [user.to_dict() for user in all_users.values()]
+    all_users_list = [user.to_json() for user in all_users.values()]
     return jsonify(all_users_list)
 
 
@@ -24,7 +28,7 @@ def Retrieves_User_object(user_id):
     user = storage.get(User, user_id)
     if user is None:
         abort(404)
-    return jsonify(user.to_dict())
+    return jsonify(user.to_json())
 
 
 @app_views.route('/users/<string:user_id>', methods=['DELETE'])
@@ -59,8 +63,6 @@ def Creates_User_POST():
     Returns the new User with the status code 201
     """
     json_response = request.get_json()
-    new_user = None  # Initialize new_user to None
-
     if not json_response:
         abort(400, 'Not a JSON')
     elif json_response:
@@ -73,7 +75,7 @@ def Creates_User_POST():
             new_user.save()
 
     if new_user:
-        return jsonify(new_user.to_dict()), 201
+        return jsonify(new_user.to_json()), 201
 
 
 @app_views.route('/users/<string:user_id>', methods=['PUT'])
@@ -93,17 +95,18 @@ def Updates_User_object_PUT(user_id):
     Ignore keys: id, email, created_at, and updated_at
     Returns the User object with the status code 200
     """
-    user = storage.get(User, user_id)
-    if user is None:
-        abort(404)
-
     json_response = request.get_json()
     if not json_response:
         abort(400, 'Not a JSON')
 
+    user = storage.get(User, user_id)
+    if user is None:
+        abort(404)
+
+    ignored_keys = ['id', 'email', 'created_at', 'updated_at']
     for key, value in json_response.items():
-        if key not in ['id', 'email', 'created_at', 'updated_at']:
+        if key not in ignored_keys:
             setattr(user, key, value)
     user.save()
 
-    return jsonify(user.to_dict()), 200
+    return jsonify(user.to_json()), 200
