@@ -19,7 +19,6 @@ def get_all_cities():
 
     # or just below line
     # cities_lst = [obj.to_dict() for obj in storage.all(city).values()]
-
     return jsonify(cities_lst)
 
 
