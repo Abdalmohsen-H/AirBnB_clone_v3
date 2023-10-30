@@ -54,6 +54,11 @@ def del_one_city_by_id(city_id):
 @app_views.route('/states/<string:state_id>/cities', methods=['POST'])
 def create_new_city(state_id):
     """Create a new city object route"""
+    # first get state data by id
+    state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
+
     json = request.get_json()
 
     if not json:
