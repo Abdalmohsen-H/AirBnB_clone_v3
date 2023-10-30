@@ -7,7 +7,7 @@ from models.base_model import BaseModel
 from models.user import User
 
 
-to_json = BaseModel.to_json
+# to_json = BaseModel.to_json
 
 
 @app_views.route('/users', methods=['GET'])
