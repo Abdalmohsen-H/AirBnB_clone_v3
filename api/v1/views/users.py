@@ -1,9 +1,13 @@
 #!/usr/bin/python3
 """API views for CRUD operation on Users model"""
 from api.v1.views import app_views
-from flask import abort, jsonify, request
+from flask import Flask, abort, jsonify, request
 from models import storage
+from models.base_model import BaseModel
 from models.user import User
+
+
+to_json = BaseModel.to_json
 
 
 @app_views.route('/users', methods=['GET'])
