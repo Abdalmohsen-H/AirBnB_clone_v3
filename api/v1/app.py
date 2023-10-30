@@ -1,32 +1,28 @@
 #!/usr/bin/python3
-"""create falsk app for airbnb clone project, register blueprint"""
+
+"""
+This script creates a Flask web application for
+an Airbnb clone project and registers a blueprint.
+"""
+
 from api.v1.views import app_views
 from flask import Flask, jsonify
-# import storage from models
 from models import storage
-# import env from to read env vars
 from os import getenv
-# make an instance on Flask class and assign
-# it to app variable
+
+"""# Create a Flask app instance"""
 app = Flask(__name__)
-# register the blueprint app_views to your Flask instance app
+
+"""# Register the blueprint 'app_views' with the Flask instance"""
 app.register_blueprint(app_views)
 
-# enable json pretty printed
-# app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-
-# disable strict _slashes globally
-# by default it was on
+"""# Disable strict slashes globally"""
 app.url_map.strict_slashes = False
-
-# declare a method to handle @app.teardown_appcontext
-# that calls storage.close()
 
 
 @app.teardown_appcontext
-def close_strg(error):  # don't forget this argument to handle errors
-    """
-    function that closes storage session
+def close_strg(error):
+    """function that closes storage session
     for task 3 on the project
     """
     if error:
