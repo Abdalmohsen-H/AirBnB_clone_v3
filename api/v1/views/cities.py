@@ -1,19 +1,27 @@
 #!/usr/bin/python3
-"""API views for CRUD operation on city model"""
+"""
+API views for CRUD operation on city model
+CITIES.PY
+"""
 from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models import storage
 from models.city import City
+from models.state import State
 
 
-@app_views.route('/cities', methods=['GET'])
-def get_all_cities():
+@app_views.route('/states/<string:state_id>/cities', methods=['GET'])
+def get_cities_by_state(state_id):
     """
-    Get all objects from the cities table/class
+    Get all cities in a specific state by state_id
     """
-    cities = storage.all(City)
-    cities_lst = [city.to_dict() for city in cities.values()]
-    return jsonify(cities_lst)
+    state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
+    
+    cities = state.cities
+    cities_list = [city.to_dict() for city in cities]
+    return jsonify(cities_list)
 
 
 @app_views.route('/cities/<string:city_id>', methods=['GET'])
@@ -43,8 +51,8 @@ def del_one_city_by_id(city_id):
     return jsonify({}), 200
 
 
-@app_views.route('/cities', methods=['POST'])
-def create_new_city():
+@app_views.route('/states/<string:state_id>/cities', methods=['POST'])
+def create_new_city(state_id):
     """Create a new city object route"""
     json = request.get_json()
 
