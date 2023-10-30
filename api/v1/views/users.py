@@ -59,8 +59,6 @@ def Creates_User_POST():
     Returns the new User with the status code 201
     """
     json_response = request.get_json()
-    new_user = None  # Initialize new_user to None
-
     if not json_response:
         abort(400, 'Not a JSON')
     elif json_response:
@@ -93,16 +91,17 @@ def Updates_User_object_PUT(user_id):
     Ignore keys: id, email, created_at, and updated_at
     Returns the User object with the status code 200
     """
-    user = storage.get(User, user_id)
-    if user is None:
-        abort(404)
-
     json_response = request.get_json()
     if not json_response:
         abort(400, 'Not a JSON')
 
+    user = storage.get(User, user_id)
+    if user is None:
+        abort(404)
+
+    ignored_keys = ['id', 'email', 'created_at', 'updated_at']
     for key, value in json_response.items():
-        if key not in ['id', 'email', 'created_at', 'updated_at']:
+        if key not in ignored_keys:
             setattr(user, key, value)
     user.save()
 
