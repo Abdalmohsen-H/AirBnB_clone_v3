@@ -59,18 +59,21 @@ def Creates_User_POST():
     Returns the new User with the status code 201
     """
     json_response = request.get_json()
+    new_user = None  # Initialize new_user to None
+
     if not json_response:
         abort(400, 'Not a JSON')
+    elif json_response:
+        if 'email' not in json_response:
+            abort(400, 'Missing email')
+        if 'password' not in json_response:
+            abort(400, 'Missing password')
+        else:
+            new_user = User(**json_response)
+            new_user.save()
 
-    if 'email' not in json_response:
-        abort(400, 'Missing email')
-    if 'password' not in json_response:
-        abort(400, 'Missing password')
-
-    new_user = User(**json_response)
-    new_user.save()
-
-    return jsonify(new_user.to_dict()), 201
+    if new_user:
+        return jsonify(new_user.to_dict()), 201
 
 
 @app_views.route('/users/<string:user_id>', methods=['PUT'])
