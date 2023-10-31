@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """API views for CRUD operation on Users model"""
 from api.v1.views import app_views
-from flask import Flask, abort, jsonify, request
+from flask import Flask, abort, jsonify, request, make_response
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -41,7 +41,7 @@ def Deletes_User_object(user_id):
         abort(404)
     storage.delete(user)
     storage.save()
-    return jsonify({}), 200
+    return make_response(jsonify({}), 200)
 
 
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
@@ -64,18 +64,18 @@ def Creates_User_POST():
     """
     json_response = request.get_json()
     if not json_response:
-        abort(400, 'Not a JSON')
+        abort(400, description='Not a JSON')
     elif json_response:
         if 'email' not in json_response:
-            abort(400, 'Missing email')
+            abort(400, description='Missing email')
         if 'password' not in json_response:
-            abort(400, 'Missing password')
+            abort(400, description='Missing password')
         else:
             new_user = User(**json_response)
             new_user.save()
 
     if new_user:
-        return jsonify(new_user.to_dict()), 201
+        return make_response(jsonify(new_user.to_dict()), 201)
 
 
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
@@ -109,4 +109,4 @@ def Updates_User_object_PUT(user_id):
             setattr(user, key, value)
     user.save()
 
-    return jsonify(user.to_dict()), 200
+    return make_response(jsonify(user.to_dict()), 200)
