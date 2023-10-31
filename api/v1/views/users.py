@@ -41,7 +41,7 @@ def Deletes_User_object(user_id):
     if user:
         storage.delete(user)
         storage.save()
-        return make_response(jsonify({}), 200)
+        return jsonify({})
     else:
         abort(404)
 
@@ -66,18 +66,17 @@ def Creates_User_POST():
     """
     json_response = request.get_json()
     if not json_response:
-        abort(400, description='Not a JSON')
+        return (jsonify({'error': 'Not a JSON'}), 400)
     elif json_response:
         if 'email' not in json_response:
-            abort(400, description='Missing email')
+            return (jsonify({'error': 'Missing email'}), 400)
         if 'password' not in json_response:
-            abort(400, description='Missing password')
+            return (jsonify({'error': 'Missing password'}), 400)
         else:
             new_user = User(**json_response)
             new_user.save()
 
-    if new_user:
-        return make_response(jsonify(new_user.to_dict()), 201)
+    return jsonify(new_user.to_dict(), 201)
 
 
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
@@ -102,12 +101,12 @@ def Updates_User_object_PUT(user_id):
 
     if user:
         if not json_response:
-            abort(400, 'Not a JSON')
-        ignored_keys = ['id', 'email', 'created_at', 'updated_at']
+            return (jsonify({'error': 'Not a JSON'}), 400)
+        ignored_keys = ['id', 'created_at', 'updated_at', 'email']
         for key, value in json_response.items():
             if key not in ignored_keys:
                 setattr(user, key, value)
         storage.save()
-        return make_response(jsonify(user.to_dict()), 200)
+        return jsonify(user.to_dict())
     else:
         abort(404)
