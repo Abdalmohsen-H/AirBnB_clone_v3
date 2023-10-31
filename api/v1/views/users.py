@@ -26,9 +26,10 @@ def Retrieves_User_object(user_id):
     Get a user by ID
     """
     user = storage.get(User, user_id)
-    if user is None:
+    if user:
+        return jsonify(user.to_dict())
+    else:
         abort(404)
-    return jsonify(user.to_dict())
 
 
 @app_views.route('/users/<user_id>', methods=['DELETE'], strict_slashes=False)
@@ -37,11 +38,12 @@ def Deletes_User_object(user_id):
     Deletes a User object
     """
     user = storage.get(User, user_id)
-    if user is None:
+    if user:
+        storage.delete(user)
+        storage.save()
+        return make_response(jsonify({}), 200)
+    else:
         abort(404)
-    storage.delete(user)
-    storage.save()
-    return make_response(jsonify({}), 200)
 
 
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
@@ -95,18 +97,17 @@ def Updates_User_object_PUT(user_id):
     Ignore keys: id, email, created_at, and updated_at
     Returns the User object with the status code 200
     """
-    json_response = request.get_json()
-    if not json_response:
-        abort(400, 'Not a JSON')
-
     user = storage.get(User, user_id)
-    if user is None:
+    json_response = request.get_json()
+
+    if user:
+        if not json_response:
+            abort(400, 'Not a JSON')
+        ignored_keys = ['id', 'email', 'created_at', 'updated_at']
+        for key, value in json_response.items():
+            if key not in ignored_keys:
+                setattr(user, key, value)
+        storage.save()
+        return make_response(jsonify(user.to_dict()), 200)
+    else:
         abort(404)
-
-    ignored_keys = ['id', 'email', 'created_at', 'updated_at']
-    for key, value in json_response.items():
-        if key not in ignored_keys:
-            setattr(user, key, value)
-    user.save()
-
-    return make_response(jsonify(user.to_dict()), 200)
