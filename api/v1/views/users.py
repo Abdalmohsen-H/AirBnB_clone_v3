@@ -8,17 +8,19 @@ from models.user import User
 
 
 # to_dict() BaseModel.to_dict()
-@app_views.route('/users', methods=['GET'])
+@app_views.route('/users', methods=['GET'], strict_slashes=False)
 def Retrieves_list_of_all_User():
     """
     Get and serialize all users
     """
     all_users = storage.all(User).values()
-    all_users_list = [user.to_dict() for user in all_users]
+    all_users_list = []
+    for user in all_users:
+        all_users_list.append(user.to_dict())
     return jsonify(all_users_list)
 
 
-@app_views.route('/users/<string:user_id>', methods=['GET'])
+@app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
 def Retrieves_User_object(user_id):
     """
     Get a user by ID
@@ -29,7 +31,7 @@ def Retrieves_User_object(user_id):
     return jsonify(user.to_dict())
 
 
-@app_views.route('/users/<string:user_id>', methods=['DELETE'])
+@app_views.route('/users/<user_id>', methods=['DELETE'], strict_slashes=False)
 def Deletes_User_object(user_id):
     """
     Deletes a User object
@@ -42,7 +44,7 @@ def Deletes_User_object(user_id):
     return jsonify({}), 200
 
 
-@app_views.route('/users', methods=['POST'])
+@app_views.route('/users', methods=['POST'], strict_slashes=False)
 def Creates_User_POST():
     """
     Creates a User using POST
@@ -76,7 +78,7 @@ def Creates_User_POST():
         return jsonify(new_user.to_dict()), 201
 
 
-@app_views.route('/users/<string:user_id>', methods=['PUT'])
+@app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
 def Updates_User_object_PUT(user_id):
     """
     Updates a User object using PUT
