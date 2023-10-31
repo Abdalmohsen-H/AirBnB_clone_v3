@@ -11,14 +11,14 @@ def get_all_amenities():
     """
     get all objects from amenities table/class
     """
-    amenities = storage.all(amenity)
+    amenities_objs = storage.all(Amenity)
     amenities_lst = []
 
-    for amenity in amenities.values():
-        amenities_lst.append(amenity.to_dict())
+    for amenity_obj in amenities_objs.values():
+        amenities_lst.append(amenity_obj.to_dict())
 
     # or just below line
-    # amenities_lst = [obj.to_dict() for obj in storage.all(amenity).values()]
+    # amenities_lst = [obj.to_dict() for obj in storage.all(Amenity).values()]
 
     return jsonify(amenities_lst)
 
@@ -29,12 +29,12 @@ def get_one_amenity_by_id(amenity_id):
     get ONE object from amenities table/class
     by id, otherwise abort and raise 404 error
     """
-    amenity = storage.get(amenity, amenity_id)
+    amenity_obj = storage.get(Amenity, amenity_id)
 
-    if amenity is None:
+    if amenity_obj is None:
         abort(404)
 
-    return jsonify(amenity.to_dict())
+    return jsonify(amenity_obj.to_dict())
 
 
 @app_views.route('/amenities/<string:amenity_id>', methods=['DELETE'])
@@ -43,13 +43,13 @@ def del_one_amenity_by_id(amenity_id):
     delete one objects from amenities table/class
     by id, otherwise abort and raise 404 error
     """
-    amenity = storage.get(amenity, amenity_id)
+    amenity_obj = storage.get(Amenity, amenity_id)
 
-    if amenity is None:
+    if amenity_obj is None:
         abort(404)
 
     # id exist in amenities table or an object of amenities class
-    storage.delete(amenity)
+    storage.delete(amenity_obj)
     # update storage to apply deleting
     storage.save()
     # return empty jsonified dict with 200 status code
@@ -70,7 +70,7 @@ def create_new_amenity():
         abort(400, 'Missing name')
 
     # create new amenity object
-    new_amenity = amenity(**json)
+    new_amenity = Amenity(**json)
     # save new_stae object to apply updates
     new_amenity.save()
 
@@ -87,18 +87,18 @@ def update_amenity_by_id(amenity_id):
         abort(400, 'Not a JSON')
 
     # get amenity object by id
-    amenity = storage.get(amenity, amenity_id)
+    amenity_obj = storage.get(Amenity, amenity_id)
 
-    if amenity is None:
+    if amenity_obj is None:
         abort(404)
 
     # update amenity object with all key-value pairs of the dictionary.
     for key, value in json.items():
         # Ignore keys: id, created_at and updated_at
         if key not in ['id', 'created_at', 'updated_at']:
-            setattr(amenity, key, value)
+            setattr(amenity_obj, key, value)
 
     # save amenity object to apply updates
-    amenity.save()
+    amenity_obj.save()
 
-    return jsonify(amenity.to_dict()), 200
+    return jsonify(amenity_obj.to_dict()), 200
