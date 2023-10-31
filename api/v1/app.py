@@ -25,8 +25,8 @@ def close_strg(error):
     """function that closes storage session
     for task 3 on the project
     """
-    if error:
-        app.logger.error(f"Unhandled exception on teardown:{error}")
+    # if error:
+    #    app.logger.error(f"Unhandled exception on teardown:{error}")
     storage.close()
 
 
