@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""This script creates a Flask web application for
+"""
+This script creates a Flask web application for
 an Airbnb clone project and registers a blueprint.
 """
 
@@ -9,19 +10,18 @@ from flask_cors import CORS
 from models import storage
 from os import getenv
 
-# Create a Flask app instance
-app = Flask(__name__)
 
+app = Flask(__name__)
 # (CORS) setup
 cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
-
 # Register the blueprint 'app_views' with the Flask instance
 app.register_blueprint(app_views)
 
 
 @app.teardown_appcontext
 def close_strg(error):
-    """function that closes storage session
+    """
+    function that closes storage session
     for task 3 on the project
     """
     if error:
